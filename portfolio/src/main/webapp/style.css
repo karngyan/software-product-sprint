@@ -1,9 +1,101 @@
-#content {
-  margin-left: auto;
-  margin-right: auto;
-  width: 650px;
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code&display=swap");
+
+/* Fade in Down Animation */
+.animated {
+  animation: fade-in-down 0.6s;
+  animation-delay: 0.3s;
+  animation-fill-mode: both;
 }
 
-#greeting-container {
+@keyframes fade-in-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+body,
+html {
+  font-size: 62.5%;
+  background-color: #18191a;
+}
+
+body {
+  line-height: 1;
+  font: 16px "Fira Code";
+  color: #aaaaaa;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  font-family: "Fira Code";
+  color: #ededed;
+}
+
+.content {
+  height: 100%;
+  width: 96%;
+  margin: 0 auto;
+  max-width: 810px;
+  margin-top: 125px;
+}
+
+.header-home {
+  display: block;
+  text-align: center;
+  position: relative;
+}
+
+.header-home .title {
+  font-size: 4rem;
+  margin: 0 0 13px;
+}
+
+.header-home .description {
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-block-start: 0.83em;
+  margin-block-end: 0.83em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+
+/* Profile Image */
+.selfie {
+  width: 125px;
+  margin-bottom: 25px;
+  border-radius: 100%;
+}
+
+/* Social Links in Header*/
+.social-links {
   margin-top: 20px;
+}
+
+.social-links .link {
+  margin: 0;
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+  height: 35px;
+  width: 35px;
+}
+
+.social-links > .link:hover > .icon {
+  color: #4599ff;
+}
+
+.icon {
+  color: #aaaaaa;
+  margin: 7px auto;
+}
+
+.social-links > .icon {
+  transition: all ease-in-out 0.2s;
 }
