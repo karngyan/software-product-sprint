@@ -99,3 +99,35 @@ window.onload = () => {
   css.innerHTML = ".typewriter > .wrap { border-right: 0.08em solid #ededed}";
   document.body.appendChild(css);
 };
+
+// Nav buttons
+const aboutButton = document.getElementById("about-btn");
+const experienceButton = document.getElementById("experience-btn");
+const photosButton = document.getElementById("photos-btn");
+const sectionIds = ["about-section", "exp-section", "photos-section"];
+
+function showSection(button, id) {
+  defocusAllButtons();
+  button.className = "nav-button focus";
+  sectionIds.forEach((sectionId) => {
+    const el = document.getElementById(sectionId);
+    el.style.display = (sectionId === id) ? 'flex' : 'none';
+  })
+}
+
+function defocusAllButtons() {
+  aboutButton.className = "nav-button";
+  experienceButton.className = "nav-button";
+  photosButton.className = "nav-button";
+}
+
+// Event Listeners
+aboutButton.addEventListener('click', () => {
+  showSection(aboutButton, 'about-section');
+});
+experienceButton.addEventListener('click', () =>  {
+  showSection(experienceButton, 'exp-section')
+});
+photosButton.addEventListener('click', () => {
+  showSection(photosButton, 'photos-section')
+});
