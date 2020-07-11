@@ -41,6 +41,7 @@ h1 {
 hr {
     border: 1px solid rgba(170, 170, 170, 0.1);
     margin-bottom: 20px;
+    width: 100%;
 }
 
 .content {
@@ -183,6 +184,59 @@ hr {
 .section-row > div {
     padding-right: 10px;
 }
+
+.section.about {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+}
+
+.section.experience {
+    display: none;
+    flex-direction: column;
+    align-items: baseline;
+}
+
+/* Photos Section */ 
+
+.section.photos {
+    display: none;
+    flex-wrap: wrap;
+    padding: 9px 4px;
+}
+
+.image.column {
+    flex: 31%;
+    max-width: 31%;
+    padding: 0 8px;
+}
+
+.image > img {
+    border-radius: 7px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    vertical-align: middle;
+    width: 100%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/* Responsive layout - makes a two column-layout instead of three columns */
+
+@media screen and (max-width: 800px) {
+  .image.column {
+    flex: 35%;
+    max-width: 350%;
+  }
+}
+
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+
+@media screen and (max-width: 600px) {
+  .image.column {
+    flex: 100%;
+    max-width: 100%;
+  }
+} 
 
 /* Text Links */
 

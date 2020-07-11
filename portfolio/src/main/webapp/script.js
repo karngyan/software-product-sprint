@@ -111,7 +111,7 @@ function showSection(button, id) {
   button.className = "nav-button focus";
   sectionIds.forEach((sectionId) => {
     const el = document.getElementById(sectionId);
-    el.style.display = (sectionId === id) ? 'block' : 'none';
+    el.style.display = (sectionId === id) ? 'flex' : 'none';
   })
 }
 
@@ -131,6 +131,3 @@ experienceButton.addEventListener('click', () =>  {
 photosButton.addEventListener('click', () => {
   showSection(photosButton, 'photos-section')
 });
-
-//Initialize sections
-aboutButton.click();
