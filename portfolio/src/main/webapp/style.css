@@ -38,12 +38,25 @@ h1 {
     color: #ededed;
 }
 
+hr {
+    border: 1px solid rgba(170, 170, 170, 0.1);
+    margin-bottom: 20px;
+}
+
 .content {
     height: 100%;
     width: 96%;
     margin: 0 auto;
     max-width: 810px;
     margin-top: 125px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.small {
+    color: #707070
 }
 
 .header-home {
@@ -160,9 +173,15 @@ h1 {
     padding: 22px;
 }
 
-.about-row {
+.section-row {
+    display: flex;
+    justify-content: left;
     padding-top: 7px;
     padding-bottom: 7px;
+}
+
+.section-row > div {
+    padding-right: 10px;
 }
 
 /* Text Links */
@@ -183,6 +202,13 @@ h1 {
     color: #ededed;
 }
 
+/* Work Logo */
+
+.work-logo {
+    border-radius: 100%;
+    width: 65px;
+    margin-right: 10px;
+}
 
 /* Footer Main*/
 
