@@ -70,25 +70,13 @@ class TypewriterText {
   }
 }
 
-window.onload = () => {
+window.onload = async () => {
   const elements = document.getElementsByClassName("typewriter");
+  const response = await fetch("/quotes");
+  const toRotate = await response.json();
 
   for (let i = 0; i < elements.length; ++i) {
     const element = elements[i];
-    const toRotate = [
-      "When you are backed against the wall, break the goddamn thing down.",
-      "I don’t play the odds I play the man.",
-      "You always have a choice.",
-      "They think you care, they’ll walk all over you.",
-      "Sorry, I can’t hear you over the sound of how awesome I am.",
-      "Anyone can do my job, but no one can be me.",
-      "I don’t have dreams, I have goals.",
-      "It’s going to happen, because I am going to make it happen.",
-      "It’s not bragging if it’s true.",
-      "Win a no win situation by rewriting the rules.",
-      "Let them hate, just make sure they spell your name right.",
-    ];
-
     const period = 2000;
     new TypewriterText(element, toRotate, period);
   }
