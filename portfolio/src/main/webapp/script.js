@@ -12,6 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Nav buttons
+const aboutButton = document.getElementById("about-btn");
+const experienceButton = document.getElementById("experience-btn");
+const photosButton = document.getElementById("photos-btn");
+
+const sectionIds = ["about-section", "exp-section", "photos-section"];
+
 /**
  * Typewriter Animation for sentences.
  */
@@ -70,10 +77,16 @@ class TypewriterText {
   }
 }
 
-window.onload = async () => {
+// creates the quotes component
+async function createQuotesComponent() {
   const elements = document.getElementsByClassName("typewriter");
+
   const response = await fetch("/quotes");
-  const toRotate = await response.json();
+  const quotes = await response.json();
+
+  const toRotate = quotes["quotes"].map((quote) => quote.quoteList)
+                                    .reduce((prevQuotes, currentQuotes) => 
+                                                prevQuotes.concat(currentQuotes), []);
 
   for (let i = 0; i < elements.length; ++i) {
     const element = elements[i];
@@ -87,12 +100,6 @@ window.onload = async () => {
   css.innerHTML = ".typewriter > .wrap { border-right: 0.08em solid #ededed}";
   document.body.appendChild(css);
 };
-
-// Nav buttons
-const aboutButton = document.getElementById("about-btn");
-const experienceButton = document.getElementById("experience-btn");
-const photosButton = document.getElementById("photos-btn");
-const sectionIds = ["about-section", "exp-section", "photos-section"];
 
 function showSection(button, id) {
   defocusAllButtons();
@@ -119,3 +126,7 @@ experienceButton.addEventListener('click', () =>  {
 photosButton.addEventListener('click', () => {
   showSection(photosButton, 'photos-section')
 });
+
+window.onload = () => {
+  createQuotesComponent();
+}

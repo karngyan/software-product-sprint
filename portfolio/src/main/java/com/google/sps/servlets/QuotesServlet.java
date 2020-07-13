@@ -1,8 +1,11 @@
 
 package com.google.sps.servlets;
 
+import com.google.sps.data.Quotes;
+import com.google.sps.exchanges.GetQuotesResponse;
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.annotation.WebServlet;
@@ -14,32 +17,38 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/quotes")
 public final class QuotesServlet extends HttpServlet {
 
-    private List<String> quotes;
+    private List<Quotes> quotes;
 
     @Override
     public void init() {
         quotes = new ArrayList<>();
-        quotes.add("When you are backed against the wall, break the goddamn thing down.");
-        quotes.add("I don’t play the odds I play the man.");
-        quotes.add("I don’t play the odds I play the man.");
-        quotes.add("You always have a choice.");
-        quotes.add("They think you care, they’ll walk all over you.");
-        quotes.add("Sorry, I can’t hear you over the sound of how awesome I am.");
-        quotes.add("Anyone can do my job, but no one can be me.");
-        quotes.add("I don’t have dreams, I have goals.");
-        quotes.add("It’s going to happen, because I am going to make it happen.");
-        quotes.add("It’s not bragging if it’s true.");
-        quotes.add("Win a no win situation by rewriting the rules.");
-        quotes.add("Let them hate, just make sure they spell your name right.");
+        List<String> suitsQuotes = 
+                Arrays.asList(
+                    "When you are backed against the wall, break the goddamn thing down.",
+                    "I don’t play the odds I play the man.",
+                    "I don’t play the odds I play the man.",
+                    "You always have a choice.",
+                    "They think you care, they’ll walk all over you.",
+                    "Sorry, I can’t hear you over the sound of how awesome I am.",
+                    "Anyone can do my job, but no one can be me.",
+                    "I don’t have dreams, I have goals.",
+                    "It’s going to happen, because I am going to make it happen.",
+                    "It’s not bragging if it’s true.",
+                    "Win a no win situation by rewriting the rules.",
+                    "Let them hate, just make sure they spell your name right."
+                );
+
+        quotes.add(new Quotes("suits", suitsQuotes));
     }
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        String quotesJsonString = new Gson().toJson(quotes);
+        GetQuotesResponse getQuotesResponse = new GetQuotesResponse(quotes);
+        String responseString = new Gson().toJson(getQuotesResponse);
 
 	    response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().print(quotesJsonString);
+        response.getWriter().print(responseString);
     }
 }
