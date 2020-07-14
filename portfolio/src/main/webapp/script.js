@@ -12,6 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Nav buttons
+const aboutButton = document.getElementById("about-btn");
+const experienceButton = document.getElementById("experience-btn");
+const photosButton = document.getElementById("photos-btn");
+
+const sectionIds = ["about-section", "exp-section", "photos-section"];
+
 /**
  * Typewriter Animation for sentences.
  */
@@ -70,25 +77,19 @@ class TypewriterText {
   }
 }
 
-window.onload = () => {
+// creates the quotes component
+async function createQuotesComponent() {
   const elements = document.getElementsByClassName("typewriter");
+
+  const response = await fetch("/quotes");
+  const quotes = await response.json();
+
+  const toRotate = quotes["quotes"].map((quote) => quote.quoteList)
+                                    .reduce((prevQuotes, currentQuotes) => 
+                                                prevQuotes.concat(currentQuotes), []);
 
   for (let i = 0; i < elements.length; ++i) {
     const element = elements[i];
-    const toRotate = [
-      "When you are backed against the wall, break the goddamn thing down.",
-      "I don’t play the odds I play the man.",
-      "You always have a choice.",
-      "They think you care, they’ll walk all over you.",
-      "Sorry, I can’t hear you over the sound of how awesome I am.",
-      "Anyone can do my job, but no one can be me.",
-      "I don’t have dreams, I have goals.",
-      "It’s going to happen, because I am going to make it happen.",
-      "It’s not bragging if it’s true.",
-      "Win a no win situation by rewriting the rules.",
-      "Let them hate, just make sure they spell your name right.",
-    ];
-
     const period = 2000;
     new TypewriterText(element, toRotate, period);
   }
@@ -99,12 +100,6 @@ window.onload = () => {
   css.innerHTML = ".typewriter > .wrap { border-right: 0.08em solid #ededed}";
   document.body.appendChild(css);
 };
-
-// Nav buttons
-const aboutButton = document.getElementById("about-btn");
-const experienceButton = document.getElementById("experience-btn");
-const photosButton = document.getElementById("photos-btn");
-const sectionIds = ["about-section", "exp-section", "photos-section"];
 
 function showSection(button, id) {
   defocusAllButtons();
@@ -131,3 +126,7 @@ experienceButton.addEventListener('click', () =>  {
 photosButton.addEventListener('click', () => {
   showSection(photosButton, 'photos-section')
 });
+
+window.onload = () => {
+  createQuotesComponent();
+}
