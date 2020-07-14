@@ -17,6 +17,11 @@ const aboutButton = document.getElementById("about-btn");
 const experienceButton = document.getElementById("experience-btn");
 const photosButton = document.getElementById("photos-btn");
 
+const commentTextArea = document.getElementById("comment");
+const commentForm = document.getElementById("comment-form");
+const commentSection = document.getElementById("comments-section");
+const commentsLoader = document.getElementById("comments-loader");
+
 const sectionIds = ["about-section", "exp-section", "photos-section"];
 
 /**
@@ -101,6 +106,52 @@ async function createQuotesComponent() {
   document.body.appendChild(css);
 };
 
+// loads the comments section
+async function loadCommentsSection() {
+  const response = await fetch("/comment");
+  const comments = (await response.json())["comments"];
+  console.log(comments);
+  const createCommentRow = ({text, createdAt}) => {
+    const timeFromNow = timeSince(new Date(createdAt));
+
+    const commentDiv = document.createElement("div");
+    const commentTextDiv = document.createElement("div");
+    const commentCreatedAtDiv = document.createElement("div");
+    commentDiv.className = "comment";
+    commentTextDiv.className = "text";
+    commentCreatedAtDiv.className = "created-at";
+
+    commentTextDiv.innerText = text;
+    commentCreatedAtDiv.innerText = timeFromNow;
+
+    commentDiv.appendChild(commentTextDiv);
+    commentDiv.appendChild(commentCreatedAtDiv);
+
+    return commentDiv;
+  }
+  
+  if (comments.length > 0) {
+    commentSection.style.display = "flex";
+  }
+  
+  commentsLoader.style.display = "none";
+
+  comments.forEach(comment => {
+    commentSection.appendChild(createCommentRow(comment));
+  })
+}
+
+function checkComment(comment) {
+  comment = comment.trim();
+  if (comment.length <= 0 || comment.length > 140) {
+    commentTextArea.classList.add("error");
+  } else {
+    commentTextArea.classList.remove("error");
+    commentTextArea.value = comment;
+    commentForm.submit();
+  }
+}
+
 function showSection(button, id) {
   defocusAllButtons();
   button.className = "nav-button focus";
@@ -116,6 +167,53 @@ function defocusAllButtons() {
   photosButton.className = "nav-button";
 }
 
+/** 
+ * Utility function to calculate time since given date 
+ * I miss moment.js
+ */
+function timeSince(date) {
+  if (typeof date !== 'object') {
+    date = new Date(date);
+  }
+
+  let seconds = Math.floor((new Date() - date) / 1000);
+  let intervalType;
+
+  let interval = Math.floor(seconds / 31536000);
+  if (interval >= 1) {
+    intervalType = "year";
+  } else {
+    interval = Math.floor(seconds / 2592000);
+    if (interval >= 1) {
+      intervalType = "month";
+    } else {
+      interval = Math.floor(seconds / 86400);
+      if (interval >= 1) {
+        intervalType = 'day';
+      } else {
+        interval = Math.floor(seconds / 3600);
+        if (interval >= 1) {
+          intervalType = "hour";
+        } else {
+          interval = Math.floor(seconds / 60);
+          if (interval >= 1) {
+            intervalType = "min";
+          } else {
+            interval = seconds;
+            intervalType = "sec";
+          }
+        }
+      }
+    }
+  }
+
+  if (interval > 1 || interval === 0) {
+    intervalType += "s";
+  }
+
+  return interval + " " + intervalType + " ago";
+}
+
 // Event Listeners
 aboutButton.addEventListener('click', () => {
   showSection(aboutButton, 'about-section');
@@ -126,7 +224,12 @@ experienceButton.addEventListener('click', () =>  {
 photosButton.addEventListener('click', () => {
   showSection(photosButton, 'photos-section')
 });
+commentForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  checkComment(commentTextArea.value)
+});
 
 window.onload = () => {
   createQuotesComponent();
+  loadCommentsSection();
 }

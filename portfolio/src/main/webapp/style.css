@@ -139,6 +139,7 @@ hr {
     padding: 10px 22px;
     border: #242526 2px solid;
     border-radius: 5px;
+    font-family: "Fira Code";
     font-size: 20px;
     background-color: #242526;
     color: #aaaaaa;
@@ -264,11 +265,133 @@ hr {
     margin-right: 10px;
 }
 
-/* Footer Main*/
+/* Comment Form */
+.form-control {
+    display: flex;
+}
+
+.form-control > button {
+    width: 20%;
+    margin-left: 10px;
+    border-radius: 10px;
+    font-size: 100%;
+    padding: 10px 22px;
+    border: #242526 2px solid;
+    font-family: "Fira Code";
+    background-color: #242526;
+    color: #aaaaaa;
+    transition-duration: 0.4s;
+    text-align: center;
+    cursor: pointer;
+}
+
+.form-control > button:hover {
+    border: #4599ff 2px solid;
+    color: #4599ff;
+}
+
+.form-control > button:focus {
+    outline: none;
+}
+
+.form-control textarea {
+    resize: none;
+    width: 100%;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    background-color: #242526;
+    color: #aaa;
+    border-radius: 10px;
+    border: 2px solid #242526;
+    font-family: "Fira Code";
+    font-size: 14px;
+}
+
+.form-control textarea:focus {
+    outline: 0;
+    border: 2px solid #4599ff;
+    color: #4599ff;
+}
+
+.form-control textarea.error {
+    outline: 0;
+    border: 2px solid #ff0033;
+    color: #4599ff;
+}
+
+/* Comment Section */
+
+.section.comments {
+    display: none;
+    flex-direction: column;
+    align-items: baseline;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    font-size: 14px;
+    margin-top: 7px;
+}
+
+.section.comments > .comment {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #3A3B3C;
+}
+
+.section.comments > .comment:last-child {
+    border-bottom: none;
+}
+
+.section.comments > .comment > .text {
+    width: 60%;
+    display: flex;
+}
+
+.section.comments > .comment > .created-at {
+    color: #707070;
+    width: 40%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: baseline;
+}
+
+/* Footer Main */
 
 .footer-main {
     margin: 50px;
     display: flex;
     justify-content: center;
     font-size: 14px;
+}
+
+/* Breaker */
+
+.breaker {
+    height: 1px;
+    margin: 3rem auto;
+    width: 100%;
+}
+
+.breaker::before {
+    content: "• • •";
+    width: 100%;
+    text-align: center;
+    display: block;
+    color: #aaa;
+    letter-spacing: 4px;
+    position: relative;
+    top: -8px;
+}
+
+/* Loaders */
+
+.comments-loader {
+    display: flex;
+    margin-top: 50px;
+    align-items: center;
+    justify-content: center;
 }
