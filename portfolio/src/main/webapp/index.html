@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <title>Home | Karn, Gyan Prakash</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://kit.fontawesome.com/cac79eb491.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/js/all.min.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -200,6 +200,24 @@
           <img src="images/nine.jpg" alt="Img One">
         </div>
     </div>
+    <div class="breaker"></div>
+    <div class="comment-form">
+      <form id="comment-form" class="comment-form" method="POST" action="/comment" autocomplete="off">
+        <div class="form-control">
+          <textarea 
+            id="comment" 
+            name="text" 
+            placeholder="Comment" 
+            rows="2" 
+            spellcheck="false"></textarea>
+            <button id="comment-post-btn" type="submit">Post</button>
+        </div>
+      </form>
+    </div>
+    <div class="comments-loader" id="comments-loader">
+      <img src="images/loader.svg" alt="Comments Loader">
+    </div>
+    <div class="section comments" id="comments-section"></div>
 
     <footer class="footer-main">
       Karn, Gyan Prakash © 2020 | Software Product Sprint
