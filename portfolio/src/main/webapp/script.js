@@ -17,10 +17,17 @@ const aboutButton = document.getElementById("about-btn");
 const experienceButton = document.getElementById("experience-btn");
 const photosButton = document.getElementById("photos-btn");
 
+const loginButton = document.getElementById("login-btn");
+const commentPostButton = document.getElementById("comment-post-btn");
+const loginLogoutHeaderButton = document.getElementById("login-logout-header-btn");
+
 const commentTextArea = document.getElementById("comment");
 const commentForm = document.getElementById("comment-form");
 const commentSection = document.getElementById("comments-section");
 const commentsLoader = document.getElementById("comments-loader");
+
+let loginUrl = "/";
+let logoutUrl = "/";
 
 const sectionIds = ["about-section", "exp-section", "photos-section"];
 
@@ -82,6 +89,28 @@ class TypewriterText {
   }
 }
 
+// checks if user logged in and allows or disallows comments form and hides login button
+async function allowOrDisallowUser() {
+  const response = await fetch("/user");
+  const userResponse = await response.json();
+
+  if (userResponse.userLoggedIn) {
+    commentTextArea.removeAttribute("disabled");
+    logoutUrl = userResponse.logoutUrl;
+    loginButton.style.display = "none";
+    commentPostButton.style.display = "inline-block";
+    loginLogoutHeaderButton.innerText = "Logout";
+    loginLogoutHeaderButton.setAttribute("href", logoutUrl);
+  } else {
+    commentTextArea.setAttribute("disabled", "true");
+    loginUrl = userResponse.loginUrl;
+    loginButton.style.display = "inline-block";
+    commentPostButton.style.display = "none";
+    loginLogoutHeaderButton.innerText = "Login";
+    loginLogoutHeaderButton.setAttribute("href", loginUrl);
+  }
+};
+
 // creates the quotes component
 async function createQuotesComponent() {
   const elements = document.getElementsByClassName("typewriter");
@@ -90,8 +119,8 @@ async function createQuotesComponent() {
   const quotes = await response.json();
 
   const toRotate = quotes["quotes"].map((quote) => quote.quoteList)
-                                    .reduce((prevQuotes, currentQuotes) => 
-                                                prevQuotes.concat(currentQuotes), []);
+    .reduce((prevQuotes, currentQuotes) =>
+      prevQuotes.concat(currentQuotes), []);
 
   for (let i = 0; i < elements.length; ++i) {
     const element = elements[i];
@@ -110,30 +139,34 @@ async function createQuotesComponent() {
 async function loadCommentsSection() {
   const response = await fetch("/comment");
   const comments = (await response.json())["comments"];
-  console.log(comments);
-  const createCommentRow = ({text, createdAt}) => {
+
+  const createCommentRow = ({ text, createdAt, email }) => {
     const timeFromNow = timeSince(new Date(createdAt));
 
     const commentDiv = document.createElement("div");
     const commentTextDiv = document.createElement("div");
+    const commentAuthorEmail = document.createElement("div");
     const commentCreatedAtDiv = document.createElement("div");
     commentDiv.className = "comment";
     commentTextDiv.className = "text";
+    commentAuthorEmail.className = "author-email"
     commentCreatedAtDiv.className = "created-at";
 
     commentTextDiv.innerText = text;
+    commentAuthorEmail.innerText = email;
     commentCreatedAtDiv.innerText = timeFromNow;
 
+    commentTextDiv.appendChild(commentAuthorEmail);
     commentDiv.appendChild(commentTextDiv);
     commentDiv.appendChild(commentCreatedAtDiv);
 
     return commentDiv;
   }
-  
+
   if (comments.length > 0) {
     commentSection.style.display = "flex";
   }
-  
+
   commentsLoader.style.display = "none";
 
   comments.forEach(comment => {
@@ -143,12 +176,14 @@ async function loadCommentsSection() {
 
 function checkComment(comment) {
   comment = comment.trim();
-  if (comment.length <= 0 || comment.length > 140) {
-    commentTextArea.classList.add("error");
-  } else {
-    commentTextArea.classList.remove("error");
-    commentTextArea.value = comment;
-    commentForm.submit();
+  if (!commentTextArea.hasAttribute("disabled")) {
+    if (comment.length <= 0 || comment.length > 140) {
+      commentTextArea.classList.add("error");
+    } else {
+      commentTextArea.classList.remove("error");
+      commentTextArea.value = comment;
+      commentForm.submit();
+    }
   }
 }
 
@@ -167,8 +202,8 @@ function defocusAllButtons() {
   photosButton.className = "nav-button";
 }
 
-/** 
- * Utility function to calculate time since given date 
+/**
+ * Utility function to calculate time since given date
  * I miss moment.js
  */
 function timeSince(date) {
@@ -218,18 +253,22 @@ function timeSince(date) {
 aboutButton.addEventListener('click', () => {
   showSection(aboutButton, 'about-section');
 });
-experienceButton.addEventListener('click', () =>  {
+experienceButton.addEventListener('click', () => {
   showSection(experienceButton, 'exp-section')
 });
 photosButton.addEventListener('click', () => {
   showSection(photosButton, 'photos-section')
 });
+loginButton.addEventListener('click', () => {
+  window.location.href = loginUrl;
+})
 commentForm.addEventListener('submit', (event) => {
   event.preventDefault();
-  checkComment(commentTextArea.value)
+  checkComment(commentTextArea.value);
 });
 
 window.onload = () => {
-  createQuotesComponent();
-  loadCommentsSection();
+  allowOrDisallowUser().then(response => console.debug("user check finished"));
+  loadCommentsSection().then(response => console.debug("comment section initialized"));
+  createQuotesComponent().then(response => console.debug("quotes initialized"));
 }
