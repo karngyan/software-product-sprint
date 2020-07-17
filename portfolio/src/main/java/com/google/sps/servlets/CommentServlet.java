@@ -20,6 +20,8 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.sps.data.Comment;
 import com.google.sps.exchanges.GetCommentsResponse;
 import com.google.gson.Gson;
@@ -47,8 +49,9 @@ public class CommentServlet extends HttpServlet {
       long id = entity.getKey().getId();
       String text = (String) entity.getProperty("text");
       long createdAt = (long) entity.getProperty("createdAt");
+      String email = (String) entity.getProperty("email");
 
-      Comment comment = new Comment(id, text, createdAt);
+      Comment comment = new Comment(id, text, createdAt, email);
       comments.add(comment);
     }
 
@@ -63,10 +66,13 @@ public class CommentServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String text = request.getParameter("text");
     long createdAt = System.currentTimeMillis();
+    UserService userService = UserServiceFactory.getUserService();
+    String email = userService.getCurrentUser().getEmail();
 
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("text", text);
     commentEntity.setProperty("createdAt", createdAt);
+    commentEntity.setProperty("email", email);
 
     DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
     datastoreService.put(commentEntity);
