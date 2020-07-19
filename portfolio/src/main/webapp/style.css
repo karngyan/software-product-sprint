@@ -38,6 +38,10 @@ h1 {
     color: #ededed;
 }
 
+a {
+    color: #4599ff;
+}
+
 hr {
     border: 1px solid rgba(170, 170, 170, 0.1);
     margin-bottom: 20px;
@@ -294,6 +298,10 @@ hr {
     outline: none;
 }
 
+#comment-post-btn {
+    display: none;
+}
+
 .form-control textarea {
     resize: none;
     width: 100%;
@@ -319,6 +327,10 @@ hr {
     color: #4599ff;
 }
 
+.form-control textarea:disabled {
+    opacity: .4;
+}
+
 /* Comment Section */
 
 .section.comments {
@@ -335,7 +347,7 @@ hr {
     width: 100%;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -349,6 +361,11 @@ hr {
 .section.comments > .comment > .text {
     width: 60%;
     display: flex;
+    flex-direction: column;
+}
+
+.section.comments > .comment > .text > .author-email {
+    color: #707070;
 }
 
 .section.comments > .comment > .created-at {
@@ -394,4 +411,18 @@ hr {
     margin-top: 50px;
     align-items: center;
     justify-content: center;
+}
+
+/* Header Login Logout Button */
+
+.login-logout-header-btn {
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 20px 40px;
+}
+
+.login-logout-header-btn:hover {
+    text-decoration: none;
 }
