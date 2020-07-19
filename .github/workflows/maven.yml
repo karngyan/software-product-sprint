@@ -1,4 +1,4 @@
-# This workflow will build a the Week 4 TDD Project and runs all Tests
+# This workflow will build the Week 4 TDD Project and run all Tests
 
 name: Java CI with Maven
 

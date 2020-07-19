@@ -26,11 +26,11 @@ public final class FindMeetingQuery {
    * > 0 : false
    * = 0 : true
    */
-  private List<Integer> isAvailableAtMinute;
+  private List<Integer> isMinuteAvailableForAllAttendees;
 
   /**
    * Worst Case
-   * Time Complexity: O(3 * 24 * 60 + events.size() * attendees.size())
+   * Time Complexity: O(events.size() * attendees.size())
    *
    * @param events Collection of Events
    * @param request MeetingRequest
@@ -39,7 +39,7 @@ public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
 
     // initialize array with true
-    isAvailableAtMinute = initializeIsAvailableAtMinuteArray(0);
+    isMinuteAvailableForAllAttendees = initializeisMinuteAvailableForAllAttendeesArray(0);
 
     // go through events
     events.forEach((event -> {
@@ -50,28 +50,28 @@ public final class FindMeetingQuery {
         // Range Updates in difference array
         int start = event.getWhen().start();
         int end = event.getWhen().end();
-        isAvailableAtMinute.set(start, isAvailableAtMinute.get(start) + 1);
-        isAvailableAtMinute.set(end, isAvailableAtMinute.get(end) - 1);
+        isMinuteAvailableForAllAttendees.set(start, isMinuteAvailableForAllAttendees.get(start) + 1);
+        isMinuteAvailableForAllAttendees.set(end, isMinuteAvailableForAllAttendees.get(end) - 1);
       }
     }));
 
     // generate actual array from difference array
-    for (int minute = 1; minute < isAvailableAtMinute.size(); ++minute) {
-      isAvailableAtMinute.set(minute,
-              isAvailableAtMinute.get(minute - 1) + isAvailableAtMinute.get(minute));
+    for (int minute = 1; minute < isMinuteAvailableForAllAttendees.size(); ++minute) {
+      isMinuteAvailableForAllAttendees.set(minute,
+              isMinuteAvailableForAllAttendees.get(minute - 1) + isMinuteAvailableForAllAttendees.get(minute));
     }
 
-    return compressIsAvailableAtMinuteToTimeRanges(request.getDuration());
+    return compressIsMinuteAvailableForAllAttendeesToTimeRanges(request.getDuration());
   }
 
-  private Collection<TimeRange> compressIsAvailableAtMinuteToTimeRanges(long minimumDuration) {
+  private Collection<TimeRange> compressIsMinuteAvailableForAllAttendeesToTimeRanges(long minimumDuration) {
     Collection<TimeRange> potentialMeetingTimeRanges = new ArrayList<>(Collections.emptyList());
 
-    // compress isAvailableAtMinute to TimeRanges
+    // compress isMinuteAvailableForAllAttendees to TimeRanges
     Boolean isAvailable = false;
     int duration = 0;
-    for (int minute = 0; minute < isAvailableAtMinute.size(); ++minute) {
-      isAvailable = isAvailableAtMinute.get(minute) == 0;
+    for (int minute = 0; minute < isMinuteAvailableForAllAttendees.size(); ++minute) {
+      isAvailable = isMinuteAvailableForAllAttendees.get(minute) == 0;
       if (isAvailable) {
         ++duration;
       } else {
@@ -93,13 +93,13 @@ public final class FindMeetingQuery {
     return potentialMeetingTimeRanges;
   }
 
-  private List<Integer> initializeIsAvailableAtMinuteArray(Integer defaultValue) {
-    List<Integer> isAvailableAtMinute = new ArrayList<>();
+  private List<Integer> initializeisMinuteAvailableForAllAttendeesArray(Integer defaultValue) {
+    List<Integer> isMinuteAvailableForAllAttendees = new ArrayList<>();
 
-    while (isAvailableAtMinute.size() <= 24 * 60) {
-      isAvailableAtMinute.add(defaultValue);
+    while (isMinuteAvailableForAllAttendees.size() <= 24 * 60) {
+      isMinuteAvailableForAllAttendees.add(defaultValue);
     }
 
-    return isAvailableAtMinute;
+    return isMinuteAvailableForAllAttendees;
   }
 }
